@@ -31,14 +31,35 @@ describe('Accesstravel tests', () =>{
         cy.get('body').then($body => {
           if ($body.find('[name="Filter.ChildrensAge[0]"]').length) {
             cy.get('[name="Filter.ChildrensAge[0]"]').clear().type('1');
+            cy.get('[name="Filter.ChildrenNum"]').invoke('val').should('equal', '1');
           }
         })
-
-
         cy.get('.form-centered > .btn').click();
         cy.get('.form-centered > .btn').click();
-
+        //Verify search results are visible
         cy.get('[class="product-item"]',{timeout: 10000}).should('be.visible');
+        //Navigate back to hotels page
+        cy.visit('https://www.accesstravel.com/en-US/Hotel/List');
+        //Entering incorrect values to the fields
+        cy.get('[name="Filter.CheckIn"]',{timeout: 10000}).clear().type('1234567890');
+        cy.get('[name="Filter.CheckIn"]').invoke('val').should('equal', '1234567890');
         
+        cy.get('[name="Filter.CheckOut"]').clear().type('0987654321');
+        cy.get('[name="Filter.CheckOut"]').invoke('val').should('equal', '0987654321');
+        
+        cy.get('[name="Filter.AdultNum"]').clear().type(',');
+        //cy.get('[name="Filter.AdultNum"]',{timeout: 10000}).invoke('val').should('equal', ',');
+        
+        cy.get('[name="Filter.ChildrenNum"]').clear().type(',');
+        //cy.get('[name="Filter.ChildrenNum"]').invoke('val').should('equal', ',');
+
+        cy.get('body').then($body => {
+          if ($body.find('[name="Filter.ChildrensAge[0]"]').length) {
+            cy.get('[name="Filter.ChildrensAge[0]"]').clear().type(',');
+            //cy.get('[name="Filter.ChildrenNum"]').invoke('val').should('equal', ',');
+          }
+        })
+        cy.get('.form-centered > .btn').click();
+        cy.get('[class="field-validation-error"]',{timeout: 10000}).should('be.visible');
     });
 });
