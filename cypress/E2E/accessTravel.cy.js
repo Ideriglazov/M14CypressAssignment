@@ -27,6 +27,18 @@ describe('Accesstravel tests', () =>{
         
         cy.get('[name="Filter.ChildrenNum"]').clear().type('1');
         cy.get('[name="Filter.ChildrenNum"]').invoke('val').should('equal', '1');
-         
+
+        cy.get('body').then($body => {
+          if ($body.find('[name="Filter.ChildrensAge[0]"]').length) {
+            cy.get('[name="Filter.ChildrensAge[0]"]').clear().type('1');
+          }
+        })
+
+
+        cy.get('.form-centered > .btn').click();
+        cy.get('.form-centered > .btn').click();
+
+        cy.get('[class="product-item"]',{timeout: 10000}).should('be.visible');
+        
     });
 });
